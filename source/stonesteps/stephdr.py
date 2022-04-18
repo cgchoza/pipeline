@@ -273,10 +273,13 @@ class StepHdr(StepLoadAux, StepMIParent):
         # Edit output header keys according to downsample 
         for key in self.getarg('divkeys'):                                # Divide keywords by sample factor
             if not key in self.dataout.header: continue
-            self.dataout.setheadval(key,self.dataout.getheadval(key)/2)
+            self.dataout.setheadval(key, self.dataout.getheadval(key)/2)
         for key in self.getarg('multkeys'):                               # Multiply keywords by sample factor
             if not key in self.dataout.header: continue
-            self.dataout.setheadval(key,self.dataout.getheadval(key)*2)
+            if key == 'GAIN':
+                self.dataout.setheadval(key, self.dataout.getheadval('GAIN')*4)
+            else:
+                self.dataout.setheadval(key, self.dataout.getheadval(key)*2)
         
     def reset(self):
         """ Resets the step to the same condition as it was when it was
